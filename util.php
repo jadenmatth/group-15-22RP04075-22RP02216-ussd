@@ -1,21 +1,22 @@
 <?php
+// Global constants using define
+define("GO_BACK", "98");
+define("GO_TO_MAIN_MENU", "99");
+define("HOST", "localhost");
+define("DBNAME", "mini_momo");
+define("USERNAME", "root");
+define("PASSWORD", "");
+
+define("USER_BALANCE", 400);
+define("TRANSACTION_FEE", 100);
+define("AGENT_COMMISSION", 50);
+
+// Africa's Talking SMS settings
+define("AT_USERNAME", "sandbox");
+define("AT_API_KEY", "atsk_03e3118aed5d43a2ca2cfc11963c8c734ffa5503b3296ea2a1ccbd156477c61d4f7237ee");
+define("SMS_SENDER", "51001");
+
 class Util {
-    const GO_BACK = "98";
-    const GO_TO_MAIN_MENU = "99";
-    const HOST = "localhost";
-    const DBNAME = "mini_momo";
-    const USERNAME = "root";
-    const PASSWORD = "";
-
-    const USER_BALANCE = 400;
-    const TRANSACTION_FEE = 100;
-    const AGENT_COMMISSION = 50;
-
-    // Africa's Talking SMS settings
-    const AT_USERNAME = "sandbox";
-    const AT_API_KEY = "atsk_03e3118aed5d43a2ca2cfc11963c8c734ffa5503b3296ea2a1ccbd156477c61d4f7237ee";
-    const SMS_SENDER = "51001";
-
     private $pdo;
 
     public function __construct() {
@@ -27,9 +28,9 @@ class Util {
 
         try {
             $this->pdo = new PDO(
-                "mysql:host=" . self::HOST . ";dbname=" . self::DBNAME,
-                self::USERNAME,
-                self::PASSWORD,
+                "mysql:host=" . HOST . ";dbname=" . DBNAME,
+                USERNAME,
+                PASSWORD,
                 $options
             );
         } catch (PDOException $e) {
