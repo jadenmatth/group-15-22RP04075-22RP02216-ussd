@@ -184,16 +184,26 @@ class Menu {
 
                 $this->pdo->commit();
                 
+                
+                // Get sender's full name from phone number
+$stmt = $this->pdo->prepare("SELECT full_name FROM users WHERE phone_number = ?");
+$stmt->execute([$recipient]);
+$sender = $stmt->fetch();
+
+$recipientName = $sender ? $sender['full_name'] : $this->phoneNumber; // fallback if name not found
                 // Send SMS to sender
                 $senderSms = new Sms($this->phoneNumber);
-                $senderMessage = "You sent ".Util::formatAmount($amount)." to $recipient\n";
+                $senderMessage = "You sent ".Util::formatAmount($amount)." to $recipientName  $recipient\n";
                 $senderMessage .= "Fee: ".Util::formatAmount(Util::TRANSACTION_FEE)."\n";
                 $senderMessage .= "Ref: $reference\nNew balance: ".Util::formatAmount($this->getUserBalance($this->phoneNumber));
                 $senderSms->sendSMS($senderMessage, $this->phoneNumber);
                 
+
+
+
                 // Send SMS to recipient
                 $recipientSms = new Sms($recipient);
-                $recipientMessage = "You received ".Util::formatAmount($amount)." from ".$this->phoneNumber."\n";
+                $recipientMessage = "You received ".Util::formatAmount($amount)." from  ".$this->phoneNumber."\n";
                 $recipientMessage .= "Ref: $reference\nNew balance: ".Util::formatAmount($this->getUserBalance($recipient));
                 $recipientSms->sendSMS($recipientMessage, $recipient);
                 
